@@ -1,3 +1,3 @@
 # weebKomik
 
-API by [https://github.com](https://github.com)
+API by [https://github.com/febryardiansyah/manga-api](https://github.com/febryardiansyah/manga-api)
