@@ -1,69 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import { Setting } from "../config/Setting";
+import React, { useState } from "react";
 import { searchManga } from "../api/weebkomik";
-interface SearchData {
-  thumb: string;
-  title: string;
-  type: string;
-  endpoint: string;
-  updated_on: string;
-}
 
-const Search: React.FC = () => {
+function App() {
+  const [query, setQuery] = useState("");
+  const [mangaList, setMangaList] = useState([]);
+  const [message, setMessage] = useState("");
 
-  const [result, setResult] = React.useState<SearchData[]>([])
+  const handleInputChange = (event) => {
+    setQuery(event.target.value);
+  };
 
-  const Search = async (q: string) => {
-    if (q.length > 3) {
-      const query = await searchManga(q);
-      setResult(query);
-    } else if (q.length < 2) {
-      setResult([])
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const mangaList = await searchManga(query);
+      if (Array.isArray(mangaList)) {
+        setMangaList(mangaList);
+        setMessage("Success");
+      } else {
+        setMessage(mangaList.message);
+      }
+    } catch (error) {
+      setMessage(error.message);
     }
-  }
-
-  React.useEffect(() => {
-    searchManga
-  }, [])
+  };
 
   return (
-    <>
-      <div className="list">
-        <div >
-          <input type="search" id="search" name="search"
-            placeholder="type here..."
-            onChange={(e) => Search(e.target.value)}
-          />
-        </div>
-        {result ? (
-          result.map((data, i) => {
-            const shortenedTitle =
-              data.title.length > 30
-                ? `${data.title.slice(0, 30)}...`
-                : data.title;
-            return (
-              <>
-                <div className="grid-auto">
-                  <div className="card" key={i}>
-                    <Link to={`/detail/${data.endpoint}`}>
-                      <img src={data.thumb} alt="result photo" loading="lazy" />
-                      <p style={{ position: "relative" }}>{shortenedTitle}</p>
-                      {/* <p>{data.type}</p>
-                    <p>{data.updated_on}</p> */}
-                    </Link>
-                  </div>
-                </div>
-
-              </>
-            );
-          })
-        ) : (
-          <p>as</p>
-        )}
-      </div>
-    </>
+    <div>
+      <h1>Search for Manga Titles</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter search query"
+          value={query}
+          onChange={handleInputChange}
+        />
+        <button type="submit">Search</button>
+      </form>
+      {message && <p>{message}</p>}
+      {mangaList.length > 0 && (
+        <ul>
+          {mangaList.map((manga) => (
+            <li key={manga.endpoint}>
+              <img src={manga.thumb} alt={manga.title} />
+              <div>
+                <h3>{manga.title}</h3>
+                <p>Type: {manga.type}</p>
+                <p>Updated On: {manga.updated_on}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
-};
+}
 
-export default Search;
+export default App;

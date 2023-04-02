@@ -127,7 +127,7 @@ const Detail: React.FC = () => {
           <h1>
             <span ></span> List Chapter
           </h1>
-          <ul >
+          <ul className="chapter" >
             {manga.chapter.map((chapt) => (
               <Link key={chapt.chapter_id} to={`/chapter/${chapt.chapter_endpoint}`} >
                 <li >

@@ -2,4 +2,7 @@ ul li{
   list-style: none;
 }
 
-
+.chapter{
+  overflow-y: auto;
+  height: 600px; /* tentukan tinggi yang sesuai */
+}
