@@ -3,7 +3,7 @@ import React from 'react'
 import Rekomen from "./Rekomen";
 import Popular from "./Popular";
 import Search from "../components/Search";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 // import Navbar from "../components/Navbar";
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
         <Search />
         <Popular />
         <Rekomen />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   )

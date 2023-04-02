@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const Navbar = lazy(() => import("./components/Navbar"));
+const Footer = lazy(() => import("./components/Footer"));
 
 const Home = lazy(() => import("./pages/Home"));
 const Popular = lazy(() => import("./pages/Popular"));
@@ -22,6 +23,7 @@ function App() {
           <Route path="/chapter/:endpoint" element={<Chapter />} />
         </Routes>
       </Suspense>
+      <Footer />
     </Router>
   );
 }

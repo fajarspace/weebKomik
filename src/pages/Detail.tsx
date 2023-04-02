@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { DetailManga } from "../api/weebkomik";
+import Footer from "../components/Footer";
 
 import image from "../static/img/loading.png";
 
@@ -69,91 +70,94 @@ const Detail: React.FC = () => {
   };
 
   return (
-    <main className="container">
-      <div>
-        {manga.thumb ? (
-          <div
-            style={{
-              backgroundImage: `url("${manga.thumb}")`,
-            }}
-          ></div>
-        ) : (
-          <div></div>
-        )}
+    <>
+      <main className="container">
         <div>
-          <img
-            className="cover"
-            src={manga.thumb ? manga.thumb : image}
-            alt="detail manga"
-          />
+          {manga.thumb ? (
+            <div
+              style={{
+                backgroundImage: `url("${manga.thumb}")`,
+              }}
+            ></div>
+          ) : (
+            <div></div>
+          )}
+          <div>
+            <img
+              className="cover"
+              src={manga.thumb ? manga.thumb : image}
+              alt="detail manga"
+            />
 
-          <hgroup className="center">
-            <h1>
-              {manga.title ? manga.title.slice(6, 100) : <progress></progress>}
-            </h1>
-            <p >{manga.status}</p>
-          </hgroup>
+            <hgroup className="center">
+              <h1>
+                {manga.title ? manga.title.slice(6, 100) : <progress></progress>}
+              </h1>
+              <p >{manga.status}</p>
+            </hgroup>
+          </div>
         </div>
-      </div>
-      <article >
-        <article>
-          <h2 >Sinopsis</h2>
-          <p>
-            {manga.synopsis}
-          </p>
-        </article>
-        <div className="grid">
+        <article >
+          <article>
+            <h2 >Sinopsis</h2>
+            <p>
+              {manga.synopsis}
+            </p>
+          </article>
+          <div className="grid">
 
-          <table className="card" role={'grid'}>
-            {/* <hgroup>
+            <table className="card" role={'grid'}>
+              {/* <hgroup>
               <h1>Info</h1>
             </hgroup> */}
-            <tbody>
-              <tr>
-                <td >Type</td>
-                <td>: {manga.type}</td>
-              </tr>
-              <tr>
-                <td >Author</td>
-                <td>: {manga.author}</td>
-              </tr>
-              <tr>
-                <td >Genre</td>
-                <td >
-                  {manga.genre_list.map((genre) => (
-                    <>
-                      <kbd key={genre.genre_id}
-                      >
-                        {genre.genre_name}
-                      </kbd> &nbsp;
-                    </>
-                  ))}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <main className="card">
-            {/* <hgroup>
+              <tbody>
+                <tr>
+                  <td >Type</td>
+                  <td>: {manga.type}</td>
+                </tr>
+                <tr>
+                  <td >Author</td>
+                  <td>: {manga.author}</td>
+                </tr>
+                <tr>
+                  <td >Genre</td>
+                  <td >
+                    {manga.genre_list.map((genre) => (
+                      <>
+                        <kbd key={genre.genre_id}
+                        >
+                          {genre.genre_name}
+                        </kbd> &nbsp;
+                      </>
+                    ))}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <main className="card">
+              {/* <hgroup>
               <h1>
                 List Chapter
               </h1>
             </hgroup> */}
-            <ul className="list-chapter" >
-              {manga.chapter.map((chapt) => (
-                <a style={{ textDecoration: "none" }} key={chapt.chapter_id} href={`/chapter/${chapt.chapter_endpoint}`} >
-                  <li >
-                    <button className="primary">
-                      {chapt.chapter_title}
-                    </button>
-                  </li>
-                </a>
-              ))}
-            </ul>
-          </main>
-        </div>
+              <ul className="list-chapter" >
+                {manga.chapter.map((chapt) => (
+                  <a style={{ textDecoration: "none" }} key={chapt.chapter_id} href={`/chapter/${chapt.chapter_endpoint}`} >
+                    <li >
+                      <button className="primary">
+                        {chapt.chapter_title}
+                      </button>
+                    </li>
+                  </a>
+                ))}
+              </ul>
+            </main>
+          </div>
 
-      </article>
-    </main>
+        </article>
+
+      </main>
+    </>
   );
 };
 
