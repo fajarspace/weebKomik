@@ -6,8 +6,6 @@ import "./assets/css/custom.css";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <div className='container'>
-      <App />
-    </div>
+    <App />
   </React.StrictMode>,
 )

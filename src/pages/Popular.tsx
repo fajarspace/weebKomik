@@ -23,23 +23,34 @@ const Popular: React.FC = () => {
   }, []);
 
   const listPopularManga = useMemo(() => {
-    return popular.map((data, i) => {
-      return (
-        <div key={i}>
-          <figure>
-            <img src={data.thumb} alt={data.title} />
-          </figure>
-          <div>
-            <Link to={`/detail/${data.endpoint}`}>
-              <h2>
-                {data.title}
-              </h2>
-            </Link>
-            <p>{data.upload_on}</p>
-          </div>
+    return (
+      <>
+        <div className="grid-auto">
+          {popular.map((data, i) => {
+            const shortenedTitle =
+              data.title.length > 30
+                ? `${data.title.slice(0, 30)}...`
+                : data.title;
+            return (
+              <>
+                <div className="" key={i}>
+                  <Link to={`/detail/${data.endpoint}`}>
+                    <figure>
+                      <img src={data.thumb} alt={data.title} />
+                    </figure>
+                    <p>
+                      {shortenedTitle}
+                      <br />
+                      <kbd>{data.upload_on}</kbd>
+                    </p>
+                  </Link>
+                </div>
+              </>
+            );
+          })}
         </div>
-      );
-    });
+      </>
+    );
   }, [popular]);
 
   return (
@@ -48,9 +59,12 @@ const Popular: React.FC = () => {
         apiUrl="https://localhost:4000/api"
         onError={handlingApiError}
       > */}
-      <h2>
-        Popular Manga
-      </h2>
+      <hgroup>
+        <h1>Popular Manga</h1>
+        <h2>
+          Populer
+        </h2>
+      </hgroup>
       {popular.length === 0 ? (
         <progress></progress>
       ) : (

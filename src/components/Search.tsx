@@ -1,63 +1,79 @@
-import React, { useState } from "react";
-// import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { searchManga } from "../api/weebkomik";
 
-function App() {
-  const [query, setQuery] = useState("");
-  const [mangaList, setMangaList] = useState([]);
-  const [message, setMessage] = useState("");
+interface SearchData {
+  thumb: string;
+  title: string;
+  type: string;
+  endpoint: string;
+  updated_on: string;
+}
 
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
-  };
+const Navbar: React.FC = () => {
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const mangaList = await searchManga(query);
-      if (Array.isArray(mangaList)) {
-        setMangaList(mangaList);
-        setMessage("Success");
-      } else {
-        setMessage(mangaList.message);
-      }
-    } catch (error) {
-      setMessage(error.message);
+  const [result, setResult] = React.useState<SearchData[]>([])
+
+  const Search = async (q: string) => {
+    if (q.length > 3) {
+      const query = await searchManga(q);
+      setResult(query);
+    } else if (q.length < 2) {
+      setResult([])
     }
-  };
+  }
 
+  React.useEffect(() => {
+    searchManga
+  }, [])
   return (
     <>
-      <form className="grid" onSubmit={handleSubmit}>
-        <input
-          type="search" id="search" name="search"
-          placeholder="Enter search query"
-          value={query}
-          onChange={handleInputChange}
-        />
-        <button style={{ width: "100px" }} type="submit">Search</button>
-      </form>
-      {message && <p>{message}</p>}
-      {mangaList.length > 0 && (
-        <ul>
-          <div className="grid-auto">
-            {mangaList.map((manga) => (
-              <li key={manga.endpoint}>
-                <div>
-                  <a href={`/detail/${manga.endpoint}`}>
-                    <img src={manga.thumb} alt={manga.title} />
-                    <p>{manga.title}</p>
-                    <small>Type: {manga.type}</small> <br />
-                    <small>Updated On: {manga.updated_on}</small>
-                  </a>
-                </div>
-              </li>
-            ))}
-          </div>
-        </ul>
-      )}
+      <main style={{ paddingTop: "1em" }}>
+        <div >
+          <input
+            type="search"
+            id="search"
+            name="search"
+            placeholder="Langsung ketik..."
+            onChange={(e) => Search(e.target.value)}
+          />
+          {/* <button
+            title="search"
+            className="uil uil-search btn ml-2"
+          ></button> */}
+        </div>
+        <div className="grid-auto">
+          {result ? (
+            result.map((data, i) => {
+              const shortenedTitle =
+                data.title.length > 30
+                  ? `${data.title.slice(0, 30)}...`
+                  : data.title;
+              return (
+                <>
+                  <main className="" key={i}>
+
+                    <div className="search">
+                      <Link to={`/detail/${data.endpoint}`}>
+                        <figure>
+                          <img className="" src={data.thumb} alt="result photo" loading="lazy" />
+                        </figure>
+                        <h4>{shortenedTitle}</h4>
+                        <small>{data.type}</small>, &nbsp;
+                        <small>{data.updated_on}</small>
+                      </Link> <br />
+                    </div>
+                  </main>
+                </>
+              );
+            })
+          ) : (
+            <><progress></progress></>
+          )}
+        </div>
+      </main>
     </>
   );
 }
 
-export default App;
+export default Navbar;

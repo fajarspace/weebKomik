@@ -5,14 +5,9 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
-      <nav>
+      <nav style={{ borderBottom: "1px solid lightgrey" }}>
         <ul>
-          <li><a href={'/'}>Weeb Komik</a></li>
-        </ul>
-        <ul>
-          <li><Link to={'/popular'} >Popular</Link></li>
-          <li>
-          </li>
+          <li><a href={'/'}>&emsp;Weeb Komik</a></li>
         </ul>
       </nav>
       {/* <Search /> */}

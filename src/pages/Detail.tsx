@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { DetailManga } from "../api/weebkomik";
 
+import image from "../assets/img/loading.png";
+
 interface Genre {
   genre_id: string;
   genre_name: string;
@@ -67,7 +69,7 @@ const Detail: React.FC = () => {
   };
 
   return (
-    <main >
+    <main className="container">
       <div>
         {manga.thumb ? (
           <div
@@ -81,7 +83,7 @@ const Detail: React.FC = () => {
         <div>
           <img
             className="cover"
-            src={manga.thumb}
+            src={manga.thumb ? manga.thumb : image}
             alt="detail manga"
           />
 
@@ -102,10 +104,10 @@ const Detail: React.FC = () => {
         </article>
         <div className="grid">
 
-          <table role={'grid'}>
-            <hgroup>
+          <table className="card" role={'grid'}>
+            {/* <hgroup>
               <h1>Info</h1>
-            </hgroup>
+            </hgroup> */}
             <tbody>
               <tr>
                 <td >Type</td>
@@ -130,21 +132,21 @@ const Detail: React.FC = () => {
               </tr>
             </tbody>
           </table>
-          <main>
-            <hgroup>
+          <main className="card">
+            {/* <hgroup>
               <h1>
                 List Chapter
               </h1>
-            </hgroup>
+            </hgroup> */}
             <ul className="list-chapter" >
               {manga.chapter.map((chapt) => (
-                <Link style={{ textDecoration: "none" }} key={chapt.chapter_id} to={`/chapter/${chapt.chapter_endpoint}`} >
+                <a style={{ textDecoration: "none" }} key={chapt.chapter_id} href={`/chapter/${chapt.chapter_endpoint}`} >
                   <li >
                     <button className="primary">
                       {chapt.chapter_title}
                     </button>
                   </li>
-                </Link>
+                </a>
               ))}
             </ul>
           </main>

@@ -38,72 +38,116 @@ button{
     border-radius: 8px;
   }
 
-
-
+/* CHAPTER KOMIK */
   .chapter {
-    max-width: 800px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
   }
   
   .chapter__nav {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    /* background-color: #f0f0f0; */
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
   }
   
   .chapter__title {
+    font-size: 2rem;
     margin: 0;
   }
   
   .chapter__menu {
-    list-style: none;
     display: flex;
-    align-items: center;
+    list-style: none;
     margin: 0;
     padding: 0;
   }
   
   .chapter__menu-item {
-    margin-left: 1rem;
+    margin-right: 1rem;
   }
   
   .chapter__menu-link {
-    display: block;
-    width: 2rem;
-    height: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
     border: none;
-    background-image: url("path/to/icon.svg");
-    background-repeat: no-repeat;
-    background-position: center center;
+    border-radius: 0.5rem;
+    background-color: #333;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease;
   }
   
   .chapter__menu-link:hover {
-    transform: scale(1.1);
+    background-color: #555;
+  }
+  
+  .chapter__menu-link:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   
   .chapter__divider {
-    display: block;
+    width: 100%;
     height: 1px;
     background-color: #ccc;
-    margin: 1rem 0;
+    margin: 2rem 0;
   }
   
   .chapter__images {
-    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 0;
     padding: 0;
   }
   
   .chapter__image-item {
-    margin-bottom: 1rem;
+    list-style: none;
+    margin: 1rem;
   }
   
   .chapter__image {
-    max-width: 100%;
+    width: 100%;
+    max-width: 900px;
     height: auto;
+    border-radius: 0.5rem;
   }
   
+  @media screen and (max-width: 768px) {
+    /* .chapter__menu-link {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.5rem;
+    } */
+  
+    .chapter__image {
+      max-width: 100%;
+    }
+  }
+  
+  /* .hasil-search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+  } */
+  
+  
+  .search {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: gray;
+  }
+   */

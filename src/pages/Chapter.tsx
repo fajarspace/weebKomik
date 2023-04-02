@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChapterManga, DetailManga } from "../api/weebkomik";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 interface ChapterImage {
   chapter_id: string;
@@ -71,28 +72,33 @@ const Chapter: React.FC = () => {
   return (
     <main className="chapter">
       <nav className="chapter__nav">
-        <h1 className="chapter__title">
-          {chapter.chapter_name ? chapter.chapter_name : "Masih Loading..."}
-        </h1>
-        <ul className="chapter__menu">
-          <li className="chapter__menu-item">
-            <button
-              onClick={() => isChapterOption(`${prevChapterUrl}`)}
-              className="chapter__menu-link"
-              disabled={!prevChapterUrl} // tambahkan disabled saat prevChapterUrl tidak ada
-            ></button>
-          </li>
-          <li className="chapter__menu-item">
-            <button
-              title="lanjut"
-              onClick={() => isChapterOption(`${nextChapterUrl}`)}
-              className="chapter__menu-link"
-              disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
-            ></button>
-          </li>
+        <h3>
+          {chapter.chapter_name ? chapter.chapter_name : <progress value="70" max="100">
+            Loading... 70%
+          </progress>
 
-        </ul>
+          }
+        </h3>
+
       </nav>
+      <ul className="chapter__menu">
+        <li className="chapter__menu-item">
+          <button
+            onClick={() => isChapterOption(`${prevChapterUrl}`)}
+            className="chapter__menu-link"
+            disabled={!prevChapterUrl}
+          ><AiOutlineArrowLeft /></button>
+        </li>
+        <li className="chapter__menu-item">
+          <button
+            title="lanjut"
+            onClick={() => isChapterOption(`${nextChapterUrl}`)}
+            className="chapter__menu-link"
+            disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
+          ><AiOutlineArrowRight /></button>
+        </li>
+
+      </ul>
       <span className="chapter__divider"></span>
       <ol className="chapter__images">
         {chapter.chapter_image
@@ -109,28 +115,33 @@ const Chapter: React.FC = () => {
           : "Loading"}
       </ol>
       <nav className="chapter__nav">
-        <h1 className="chapter__title">
-          {chapter.chapter_name ? chapter.chapter_name : "Masih Loading..."}
-        </h1>
-        <ul className="chapter__menu">
-          <li className="chapter__menu-item">
-            <button
-              onClick={() => isChapterOption(`${prevChapterUrl}`)}
-              className="chapter__menu-link"
-              disabled={!prevChapterUrl} // tambahkan disabled saat prevChapterUrl tidak ada
-            >Next</button>
-          </li>
-          <li className="chapter__menu-item">
-            <button
-              title="lanjut"
-              onClick={() => isChapterOption(`${nextChapterUrl}`)}
-              className="chapter__menu-link"
-              disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
-            ></button>
-          </li>
+        <h3>
+          {chapter.chapter_name ? chapter.chapter_name : <progress value="70" max="100">
+            Loading... 70%
+          </progress>
 
-        </ul>
+          }
+        </h3>
+
       </nav>
+      <ul className="chapter__menu">
+        <li className="chapter__menu-item">
+          <button
+            onClick={() => isChapterOption(`${prevChapterUrl}`)}
+            className="chapter__menu-link"
+            disabled={!prevChapterUrl} // tambahkan disabled saat prevChapterUrl tidak ada
+          ><AiOutlineArrowLeft /></button>
+        </li>
+        <li className="chapter__menu-item">
+          <button
+            title="lanjut"
+            onClick={() => isChapterOption(`${nextChapterUrl}`)}
+            className="chapter__menu-link"
+            disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
+          ><AiOutlineArrowRight /></button>
+        </li>
+
+      </ul>
     </main>
 
   );
