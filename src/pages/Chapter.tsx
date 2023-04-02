@@ -94,7 +94,7 @@ const Chapter: React.FC = () => {
         </li>
 
       </ul>
-      <span className="chapter__divider"></span>
+      {/* <span className="chapter__divider"></span> */}
       <ol className="chapter__images">
         {chapter.chapter_image
           ? chapter.chapter_image.map((image) => (
@@ -109,6 +109,7 @@ const Chapter: React.FC = () => {
           ))
           : "Loading"}
       </ol>
+      <span className="chapter__divider"></span>
       <h5>
         {chapter.chapter_name ? chapter.chapter_name : <progress>
         </progress>
