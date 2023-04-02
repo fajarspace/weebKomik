@@ -71,16 +71,11 @@ const Chapter: React.FC = () => {
   const navigate = useNavigate()
   return (
     <main className="chapter">
-      <nav className="chapter__nav">
-        <h3>
-          {chapter.chapter_name ? chapter.chapter_name : <progress value="70" max="100">
-            Loading... 70%
-          </progress>
-
-          }
-        </h3>
-
-      </nav>
+      <h5>
+        {chapter.chapter_name ? chapter.chapter_name : <progress>
+        </progress>
+        }
+      </h5>
       <ul className="chapter__menu">
         <li className="chapter__menu-item">
           <button
@@ -114,16 +109,11 @@ const Chapter: React.FC = () => {
           ))
           : "Loading"}
       </ol>
-      <nav className="chapter__nav">
-        <h3>
-          {chapter.chapter_name ? chapter.chapter_name : <progress value="70" max="100">
-            Loading... 70%
-          </progress>
-
-          }
-        </h3>
-
-      </nav>
+      <h5>
+        {chapter.chapter_name ? chapter.chapter_name : <progress>
+        </progress>
+        }
+      </h5>
       <ul className="chapter__menu">
         <li className="chapter__menu-item">
           <button
