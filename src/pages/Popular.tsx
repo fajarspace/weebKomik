@@ -33,18 +33,21 @@ const Popular: React.FC = () => {
                 : data.title;
             return (
               <>
-                <div className="" key={i}>
+                <div className="cards" key={i}>
                   <Link to={`/detail/${data.endpoint}`}>
                     <figure>
                       <img src={data.thumb} alt={data.title} />
                     </figure>
-                    <p>
-                      {shortenedTitle}
-                      <br />
-                      <kbd>{data.upload_on}</kbd>
-                    </p>
+                    <div className="cards-content">
+                      <p>
+                        {shortenedTitle}
+                        <br />
+                        <kbd>{data.upload_on}</kbd>
+                      </p>
+                    </div>
                   </Link>
                 </div>
+
               </>
             );
           })}

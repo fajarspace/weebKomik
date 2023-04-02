@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiKey = "http://localhost:4000/api";
+const apiKey = "https://weebkomik.up.railway.app/api";
 
 export const searchManga = async (q: string) => {
   try {

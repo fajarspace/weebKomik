@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
-      <nav style={{ borderBottom: "1px solid lightgrey" }}>
+      <nav style={{ borderBottom: "1px solid lightgrey", marginBottom: "1em" }}>
         <ul>
           <li><a href={'/'}>&emsp;Weeb Komik</a></li>
         </ul>
