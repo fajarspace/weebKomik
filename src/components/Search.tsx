@@ -58,9 +58,11 @@ const Navbar: React.FC = () => {
                         <figure>
                           <img className="" src={data.thumb} alt="result photo" loading="lazy" />
                         </figure>
-                        <h4>{shortenedTitle}</h4>
-                        <small>{data.type}</small>, &nbsp;
-                        <small>{data.updated_on}</small>
+                        <p>{shortenedTitle} <br />
+                          <mark>{data.type}</mark>
+                          <kbd>{data.updated_on}</kbd>
+                        </p>
+
                       </Link> <br />
                     </div>
                   </main>
