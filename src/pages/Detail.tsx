@@ -48,10 +48,10 @@ const Detail: React.FC = () => {
   const ReadMore = () => {
     return (
       <>
-        <label htmlFor="my-modal-4">
+        {/* <label htmlFor="my-modal-4">
           Baca Selengkapnya...
         </label>
-        <input type="checkbox" id="my-modal-4" />
+        <input type="checkbox" id="my-modal-4" /> */}
         <label htmlFor="my-modal-4" >
           <label className="modal-box relative" htmlFor="">
             <h1 >Sinopsis</h1>
@@ -94,10 +94,7 @@ const Detail: React.FC = () => {
         <article>
           <h2 >Sinopsis</h2>
           <p>
-            {manga.synopsis.length > 100
-              ? `${manga.synopsis.slice(0, 100)} `
-              : manga.synopsis}
-            {manga.synopsis.length > 100 && <ReadMore />}
+            {manga.synopsis}
           </p>
         </article>
         <div >

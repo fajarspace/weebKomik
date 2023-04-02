@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<progress></progress>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/popular" element={<Popular />} />

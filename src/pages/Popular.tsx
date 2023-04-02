@@ -52,7 +52,7 @@ const Popular: React.FC = () => {
         Popular Manga
       </h2>
       {popular.length === 0 ? (
-        <h1>Loading...</h1>
+        <progress></progress>
       ) : (
         <div>
           {listPopularManga}

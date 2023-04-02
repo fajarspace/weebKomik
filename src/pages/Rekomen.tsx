@@ -28,11 +28,9 @@ const Recommend: React.FC = () => {
                 : data.title;
             return (
               <>
-                <div className="card" key={i}>
+                <div className="" key={i}>
                   <Link to={`/detail/${data.endpoint}`}>
-                    <figure>
-                      <img className="icon-komik" src={data.thumb} alt={data.title} />
-                    </figure>
+                    <img src={data.thumb} alt={data.title} />
                     <p>
                       {shortenedTitle}
                     </p>
@@ -48,11 +46,14 @@ const Recommend: React.FC = () => {
 
   return (
     <main>
-      <h2>
-        Recommendation Komik
-      </h2>
+      <hgroup>
+        <h1>Rekomen untuk dibaca</h1>
+        <h2>
+          Recommendation Komik
+        </h2>
+      </hgroup>
       {popular.length === 0 ? (
-        <h1>Loading...</h1>
+        <progress></progress>
       ) : (
         <div>
           <ListRekomenManga />
