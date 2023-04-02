@@ -2,7 +2,108 @@ ul li{
   list-style: none;
 }
 
-.chapter{
+.list-chapter{
   overflow-y: auto;
-  height: 600px; /* tentukan tinggi yang sesuai */
+  height: 400px; /* tentukan tinggi yang sesuai */
 }
+button{
+  border: none;
+}
+.primary{
+  background-color: #1e88e5;
+}
+
+  /* table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+   */
+
+  .cover {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+
+
+  .chapter {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .chapter__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    /* background-color: #f0f0f0; */
+  }
+  
+  .chapter__title {
+    margin: 0;
+  }
+  
+  .chapter__menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chapter__menu-item {
+    margin-left: 1rem;
+  }
+  
+  .chapter__menu-link {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background-image: url("path/to/icon.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .chapter__menu-link:hover {
+    transform: scale(1.1);
+  }
+  
+  .chapter__divider {
+    display: block;
+    height: 1px;
+    background-color: #ccc;
+    margin: 1rem 0;
+  }
+  
+  .chapter__images {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chapter__image-item {
+    margin-bottom: 1rem;
+  }
+  
+  .chapter__image {
+    max-width: 100%;
+    height: auto;
+  }
+  

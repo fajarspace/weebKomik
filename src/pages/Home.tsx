@@ -1,12 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import Rekomen from "./Rekomen";
+import Search from "../components/Search";
+// import Navbar from "../components/Navbar";
 
 const Home = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   return (
     <>
-      <h1>wellcome</h1>
+      {/* <Navbar /> */}
+      <Search />
       <Rekomen />
     </>
   )

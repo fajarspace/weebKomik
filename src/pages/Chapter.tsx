@@ -69,45 +69,70 @@ const Chapter: React.FC = () => {
 
   const navigate = useNavigate()
   return (
-    <main>
-      <nav>
-        <h1>
+    <main className="chapter">
+      <nav className="chapter__nav">
+        <h1 className="chapter__title">
           {chapter.chapter_name ? chapter.chapter_name : "Masih Loading..."}
         </h1>
-        <ul>
-          <li>
-            <label
-              title="daftar chapter" onClick={() => alert('fitur belum tersedia')}
-            ></label>
-          </li>
-          <li>
+        <ul className="chapter__menu">
+          <li className="chapter__menu-item">
             <button
               onClick={() => isChapterOption(`${prevChapterUrl}`)}
+              className="chapter__menu-link"
+              disabled={!prevChapterUrl} // tambahkan disabled saat prevChapterUrl tidak ada
             ></button>
           </li>
-          <li>
+          <li className="chapter__menu-item">
             <button
               title="lanjut"
               onClick={() => isChapterOption(`${nextChapterUrl}`)}
+              className="chapter__menu-link"
+              disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
             ></button>
           </li>
+
         </ul>
       </nav>
-      <span></span>
-      <ol>
+      <span className="chapter__divider"></span>
+      <ol className="chapter__images">
         {chapter.chapter_image
           ? chapter.chapter_image.map((image) => (
-            <li key={image.chapter_id}>
+            <li key={image.chapter_id} className="chapter__image-item">
               <img
                 src={image.chapter_image_link}
                 alt={image.chapter_id}
                 loading="lazy"
+                className="chapter__image"
               />
             </li>
           ))
           : "Loading"}
       </ol>
+      <nav className="chapter__nav">
+        <h1 className="chapter__title">
+          {chapter.chapter_name ? chapter.chapter_name : "Masih Loading..."}
+        </h1>
+        <ul className="chapter__menu">
+          <li className="chapter__menu-item">
+            <button
+              onClick={() => isChapterOption(`${prevChapterUrl}`)}
+              className="chapter__menu-link"
+              disabled={!prevChapterUrl} // tambahkan disabled saat prevChapterUrl tidak ada
+            >Next</button>
+          </li>
+          <li className="chapter__menu-item">
+            <button
+              title="lanjut"
+              onClick={() => isChapterOption(`${nextChapterUrl}`)}
+              className="chapter__menu-link"
+              disabled={!nextChapterUrl} // tambahkan disabled saat nextChapterUrl tidak ada
+            ></button>
+          </li>
+
+        </ul>
+      </nav>
     </main>
+
   );
 };
 

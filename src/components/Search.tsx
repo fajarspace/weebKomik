@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { Link } from "react-router-dom";
 import { searchManga } from "../api/weebkomik";
 
 function App() {
@@ -26,33 +27,36 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Search for Manga Titles</h1>
-      <form onSubmit={handleSubmit}>
+    <>
+      <form className="grid" onSubmit={handleSubmit}>
         <input
-          type="text"
+          type="search" id="search" name="search"
           placeholder="Enter search query"
           value={query}
           onChange={handleInputChange}
         />
-        <button type="submit">Search</button>
+        <button style={{ width: "100px" }} type="submit">Search</button>
       </form>
       {message && <p>{message}</p>}
       {mangaList.length > 0 && (
         <ul>
-          {mangaList.map((manga) => (
-            <li key={manga.endpoint}>
-              <img src={manga.thumb} alt={manga.title} />
-              <div>
-                <h3>{manga.title}</h3>
-                <p>Type: {manga.type}</p>
-                <p>Updated On: {manga.updated_on}</p>
-              </div>
-            </li>
-          ))}
+          <div className="grid-auto">
+            {mangaList.map((manga) => (
+              <li key={manga.endpoint}>
+                <div>
+                  <a href={`/detail/${manga.endpoint}`}>
+                    <img src={manga.thumb} alt={manga.title} />
+                    <p>{manga.title}</p>
+                    <small>Type: {manga.type}</small> <br />
+                    <small>Updated On: {manga.updated_on}</small>
+                  </a>
+                </div>
+              </li>
+            ))}
+          </div>
         </ul>
       )}
-    </div>
+    </>
   );
 }
 

@@ -30,7 +30,10 @@ const Recommend: React.FC = () => {
               <>
                 <div className="" key={i}>
                   <Link to={`/detail/${data.endpoint}`}>
-                    <img src={data.thumb} alt={data.title} />
+                    <figure>
+                      <img src={data.thumb} alt={data.title} />
+                    </figure>
+
                     <p>
                       {shortenedTitle}
                     </p>

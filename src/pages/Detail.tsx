@@ -54,10 +54,12 @@ const Detail: React.FC = () => {
         <input type="checkbox" id="my-modal-4" /> */}
         <label htmlFor="my-modal-4" >
           <label className="modal-box relative" htmlFor="">
-            <h1 >Sinopsis</h1>
-            <p>
-              {manga.synopsis}
-            </p>
+            <hgroup>
+              <h1 >Sinopsis</h1>
+              <h2>
+                {manga.synopsis}
+              </h2>
+            </hgroup>
           </label>
         </label>
       </>
@@ -66,7 +68,7 @@ const Detail: React.FC = () => {
 
   return (
     <main >
-      <section className="thumbnail">
+      <div>
         {manga.thumb ? (
           <div
             style={{
@@ -78,18 +80,19 @@ const Detail: React.FC = () => {
         )}
         <div>
           <img
+            className="cover"
             src={manga.thumb}
             alt="detail manga"
-            loading="lazy"
           />
-          <div>
+
+          <hgroup className="center">
             <h1>
-              {manga.title ? manga.title.slice(6, 100) : "Loading"}
+              {manga.title ? manga.title.slice(6, 100) : <progress></progress>}
             </h1>
             <p >{manga.status}</p>
-          </div>
+          </hgroup>
         </div>
-      </section>
+      </div>
       <article >
         <article>
           <h2 >Sinopsis</h2>
@@ -97,8 +100,12 @@ const Detail: React.FC = () => {
             {manga.synopsis}
           </p>
         </article>
-        <div >
-          <table >
+        <div className="grid">
+
+          <table role={'grid'}>
+            <hgroup>
+              <h1>Info</h1>
+            </hgroup>
             <tbody>
               <tr>
                 <td >Type</td>
@@ -111,32 +118,38 @@ const Detail: React.FC = () => {
               <tr>
                 <td >Genre</td>
                 <td >
-                  {":"}
                   {manga.genre_list.map((genre) => (
-                    <p key={genre.genre_id}
-                    >
-                      {genre.genre_name}
-                    </p>
+                    <>
+                      <kbd key={genre.genre_id}
+                      >
+                        {genre.genre_name}
+                      </kbd> &nbsp;
+                    </>
                   ))}
                 </td>
               </tr>
             </tbody>
           </table>
+          <main>
+            <hgroup>
+              <h1>
+                List Chapter
+              </h1>
+            </hgroup>
+            <ul className="list-chapter" >
+              {manga.chapter.map((chapt) => (
+                <Link style={{ textDecoration: "none" }} key={chapt.chapter_id} to={`/chapter/${chapt.chapter_endpoint}`} >
+                  <li >
+                    <button className="primary">
+                      {chapt.chapter_title}
+                    </button>
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </main>
         </div>
-        <main>
-          <h1>
-            <span ></span> List Chapter
-          </h1>
-          <ul className="chapter" >
-            {manga.chapter.map((chapt) => (
-              <Link key={chapt.chapter_id} to={`/chapter/${chapt.chapter_endpoint}`} >
-                <li >
-                  {chapt.chapter_title}
-                </li>
-              </Link>
-            ))}
-          </ul>
-        </main>
+
       </article>
     </main>
   );
