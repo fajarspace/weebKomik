@@ -1,3 +1,3 @@
 # weebKomik
 
-API by [](https://github.com)
+API by !(!a)[https://github.com]

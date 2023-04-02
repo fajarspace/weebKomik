@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { popularKomik } from "../api/weebkomik";
+import { popularManga } from "../api/weebkomik";
 
 interface PopularData {
   title: string;
@@ -17,12 +17,12 @@ const Popular: React.FC = () => {
   const [popular, setPopular] = useState<PopularData[]>([]);
 
   useEffect(() => {
-    popularKomik().then((res) => {
+    popularManga().then((res) => {
       setPopular(res);
     });
   }, []);
 
-  const listPopularKomik = useMemo(() => {
+  const listPopularManga = useMemo(() => {
     return popular.map((data, i) => {
       return (
         <div key={i}>
@@ -55,7 +55,7 @@ const Popular: React.FC = () => {
         <h1>Loading...</h1>
       ) : (
         <div>
-          {listPopularKomik}
+          {listPopularManga}
         </div>
       )}
       {/* </ErrorGet> */}
