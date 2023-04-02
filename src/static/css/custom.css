@@ -47,7 +47,7 @@ button{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
+    /* padding: 0.1rem; */
   }
   
   .chapter__nav {
@@ -115,7 +115,7 @@ button{
   
   .chapter__image {
     width: 100%;
-    max-width: 900px;
+    /* max-width: 900px; */
     height: auto;
     border-radius: 0.5rem;
   }
