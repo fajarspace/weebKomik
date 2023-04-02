@@ -20,22 +20,28 @@ const Recommend: React.FC = () => {
   const ListRekomenManga = memo(() => {
     return (
       <>
-        {popular.map((data, i) => {
-          return (
-            <div key={i}>
-              <figure>
-                <img src={data.thumb} alt={data.title} />
-              </figure>
-              <div>
-                <Link to={`/detail/${data.endpoint}`}>
-                  <h2>
-                    {data.title}
-                  </h2>
-                </Link>
-              </div>
-            </div>
-          );
-        })}
+        <div className="grid-auto">
+          {popular.map((data, i) => {
+            const shortenedTitle =
+              data.title.length > 30
+                ? `${data.title.slice(0, 30)}...`
+                : data.title;
+            return (
+              <>
+                <div className="card" key={i}>
+                  <Link to={`/detail/${data.endpoint}`}>
+                    <figure>
+                      <img className="icon-komik" src={data.thumb} alt={data.title} />
+                    </figure>
+                    <p>
+                      {shortenedTitle}
+                    </p>
+                  </Link>
+                </div>
+              </>
+            );
+          })}
+        </div>
       </>
     );
   });
