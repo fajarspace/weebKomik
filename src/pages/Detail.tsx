@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { DetailManga } from "../api/weebkomik";
 
-import image from "../assets/img/loading.png";
+import image from "../static/img/loading.png";
 
 interface Genre {
   genre_id: string;
