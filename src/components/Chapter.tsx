@@ -38,6 +38,8 @@ const ChapterReader: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageQuality, setImageQuality] = useState<"high" | "low">("high");
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     if (chapterId) {
@@ -45,6 +47,32 @@ const ChapterReader: React.FC = () => {
       window.scrollTo(0, 0);
     }
   }, [chapterId]);
+
+  // Handle scroll to show/hide navbar and footer
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 50) {
+        // Always show at top
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down - hide
+        setIsVisible(false);
+      } else {
+        // Scrolling up - show
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   const fetchChapterDetail = async () => {
     setLoading(true);
@@ -124,8 +152,12 @@ const ChapterReader: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Top Header - Fixed */}
-      <div className="fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 z-50">
+      {/* Top Header - Fixed with slide animation */}
+      <div
+        className={`fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 z-50 transition-transform duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <button
@@ -331,8 +363,12 @@ const ChapterReader: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation - Fixed */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 z-50">
+      {/* Bottom Navigation - Fixed with slide animation */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 z-50 transition-transform duration-300 ${
+          isVisible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-2">
             <button
@@ -387,6 +423,16 @@ const ChapterReader: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Show Navigation Trigger Areas - Invisible hover zones */}
+      <div
+        className="fixed top-0 left-0 right-0 h-20 z-40"
+        onMouseEnter={() => setIsVisible(true)}
+      />
+      <div
+        className="fixed bottom-0 left-0 right-0 h-20 z-40"
+        onMouseEnter={() => setIsVisible(true)}
+      />
     </div>
   );
 };
