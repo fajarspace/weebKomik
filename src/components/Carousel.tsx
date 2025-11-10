@@ -201,7 +201,7 @@ const HeroCarousel: React.FC = () => {
                         }
                         className="!bg-blue-800 hover:bg-blue-500"
                       >
-                        Lihat Detail <RightOutlined />
+                        Baca <RightOutlined />
                       </Button>
                     </div>
                   </div>
