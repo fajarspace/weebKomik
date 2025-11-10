@@ -1,24 +1,15 @@
-import React from 'react'
-// import { useNavigate } from 'react-router-dom'
-import Rekomen from "./Rekomen";
-import Popular from "./Popular";
-import Search from "../components/Search";
-// import Footer from "../components/Footer";
-// import Navbar from "../components/Navbar";
+import HeroCarousel from "../components/Carousel";
+import MangaList from "../components/List";
+import RecommendedManga from "../components/Recommended";
 
 const Home = () => {
-  // const navigate = useNavigate()
   return (
-    <>
-      {/* <Navbar /> */}
-      <div className='container'>
-        <Search />
-        <Popular />
-        <Rekomen />
-        {/* <Footer /> */}
-      </div>
-    </>
-  )
-}
+    <div>
+      <HeroCarousel />
+      <RecommendedManga />
+      <MangaList />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
