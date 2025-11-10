@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Drawer, Input, List, Spin } from "antd";
+import {
+  SearchOutlined,
+  CloseOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
+
+const { Search } = Input;
 
 interface ChapterDetailData {
   chapter_id: string;
@@ -29,6 +37,12 @@ interface ChapterDetailResponse {
   data: ChapterDetailData;
 }
 
+interface ChapterListItem {
+  chapter_id: string;
+  chapter_number: number;
+  chapter_title: string;
+}
+
 const ChapterReader: React.FC = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
   const navigate = useNavigate();
@@ -40,6 +54,15 @@ const ChapterReader: React.FC = () => {
   const [imageQuality, setImageQuality] = useState<"high" | "low">("high");
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Drawer states
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [allChapters, setAllChapters] = useState<ChapterListItem[]>([]);
+  const [filteredChapters, setFilteredChapters] = useState<ChapterListItem[]>(
+    []
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loadingChapters, setLoadingChapters] = useState(false);
 
   useEffect(() => {
     if (chapterId) {
@@ -54,13 +77,10 @@ const ChapterReader: React.FC = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY < 50) {
-        // Always show at top
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY) {
-        // Scrolling down - hide
         setIsVisible(false);
       } else {
-        // Scrolling up - show
         setIsVisible(true);
       }
 
@@ -73,6 +93,29 @@ const ChapterReader: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY]);
+
+  // Filter chapters when search query changes
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredChapters(allChapters);
+    } else {
+      const query = searchQuery.toLowerCase().trim();
+      const isNumericQuery = /^\d+$/.test(query);
+
+      const filtered = allChapters.filter((chapter) => {
+        if (isNumericQuery) {
+          return chapter.chapter_number.toString() === query;
+        } else {
+          if (chapter.chapter_title) {
+            return chapter.chapter_title.toLowerCase().includes(query);
+          }
+          return false;
+        }
+      });
+
+      setFilteredChapters(filtered);
+    }
+  }, [searchQuery, allChapters]);
 
   const fetchChapterDetail = async () => {
     setLoading(true);
@@ -90,6 +133,74 @@ const ChapterReader: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAllChapters = async (mangaId: string) => {
+    setLoadingChapters(true);
+    try {
+      const firstRes = await fetch(
+        `https://api.shngm.io/v1/chapter/${mangaId}/list?page=1&page_size=100&sort_by=chapter_number&sort_order=desc`
+      );
+      const firstData = await firstRes.json();
+
+      if (firstData.retcode === 0) {
+        const totalPages = firstData.meta.total_page;
+        let allChaptersData: ChapterListItem[] = firstData.data.map(
+          (ch: any) => ({
+            chapter_id: ch.chapter_id,
+            chapter_number: ch.chapter_number,
+            chapter_title: ch.chapter_title || "",
+          })
+        );
+
+        if (totalPages > 1) {
+          const promises = [];
+          for (let page = 2; page <= totalPages; page++) {
+            promises.push(
+              fetch(
+                `https://api.shngm.io/v1/chapter/${mangaId}/list?page=${page}&page_size=100&sort_by=chapter_number&sort_order=desc`
+              ).then((res) => res.json())
+            );
+          }
+
+          const results = await Promise.all(promises);
+          results.forEach((result) => {
+            if (result.retcode === 0) {
+              const chapters = result.data.map((ch: any) => ({
+                chapter_id: ch.chapter_id,
+                chapter_number: ch.chapter_number,
+                chapter_title: ch.chapter_title || "",
+              }));
+              allChaptersData = [...allChaptersData, ...chapters];
+            }
+          });
+        }
+
+        setAllChapters(allChaptersData);
+        setFilteredChapters(allChaptersData);
+      }
+    } catch (error) {
+      console.error("Error fetching all chapters:", error);
+    } finally {
+      setLoadingChapters(false);
+    }
+  };
+
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
+    if (chapterData?.manga_id && allChapters.length === 0) {
+      fetchAllChapters(chapterData.manga_id);
+    }
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+    setSearchQuery("");
+  };
+
+  const handleChapterClick = (chapterId: string) => {
+    handleCloseDrawer();
+    navigate(`/chapter/${chapterId}`);
   };
 
   const getImageUrl = (filename: string) => {
@@ -253,7 +364,7 @@ const ChapterReader: React.FC = () => {
       </div>
 
       {/* Chapter Images */}
-      <div className="max-w-5xl mx-auto px-0 sm:px-4 pb-20">
+      <div className="max-w-2xl mx-auto px-0 sm:px-4 pb-20">
         <div className="space-y-0">
           {chapterData.chapter.data.map((image, index) => (
             <div
@@ -267,7 +378,6 @@ const ChapterReader: React.FC = () => {
                 className="w-full h-auto mx-auto"
                 loading={index < 3 ? "eager" : "lazy"}
                 onLoadStart={() => {
-                  // Update current image index when image enters viewport
                   const observer = new IntersectionObserver(
                     (entries) => {
                       entries.forEach((entry) => {
@@ -295,13 +405,13 @@ const ChapterReader: React.FC = () => {
         </div>
 
         {/* End of Chapter Message */}
-        <div className="bg-gray-800 rounded-lg p-8 text-center mt-8 mx-4 sm:mx-0">
+        {/* <div className="bg-gray-800 rounded-lg p-8 text-center mt-8 mx-4 sm:mx-0">
           <h3 className="text-white text-xl font-semibold mb-2">
             Akhir Chapter {chapterData.chapter_number}
           </h3>
           <p className="text-gray-400 mb-6">Terima kasih sudah membaca!</p>
 
-          {/* Chapter Navigation */}
+   
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={handlePrevChapter}
@@ -360,7 +470,7 @@ const ChapterReader: React.FC = () => {
               </svg>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Bottom Navigation - Fixed with slide animation */}
@@ -389,15 +499,24 @@ const ChapterReader: React.FC = () => {
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              <span className="hidden sm:inline">Prev</span>
+              <span>
+                {chapterData.prev_chapter_id
+                  ? `Chapter ${chapterData.prev_chapter_number}`
+                  : "Tidak ada chapter sebelumnya"}
+              </span>
             </button>
 
             <button
-              onClick={handleBackToChapterList}
+              onClick={handleOpenDrawer}
               className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
             >
-              <span className="hidden sm:inline">Daftar Chapter</span>
-              <span className="sm:hidden">List</span>
+              <span className="hidden sm:inline">
+                {" "}
+                <UnorderedListOutlined />
+              </span>
+              <span className="sm:hidden">
+                <UnorderedListOutlined />
+              </span>
             </button>
 
             <button
@@ -405,7 +524,11 @@ const ChapterReader: React.FC = () => {
               disabled={!chapterData.next_chapter_id}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
             >
-              <span className="hidden sm:inline">Next</span>
+              <span>
+                {chapterData.next_chapter_id
+                  ? `Chapter ${chapterData.next_chapter_number}`
+                  : "Tidak ada chapter berikutnya"}
+              </span>
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -424,7 +547,7 @@ const ChapterReader: React.FC = () => {
         </div>
       </div>
 
-      {/* Show Navigation Trigger Areas - Invisible hover zones */}
+      {/* Show Navigation Trigger Areas */}
       <div
         className="fixed top-0 left-0 right-0 h-20 z-40"
         onMouseEnter={() => setIsVisible(true)}
@@ -433,6 +556,115 @@ const ChapterReader: React.FC = () => {
         className="fixed bottom-0 left-0 right-0 h-20 z-40"
         onMouseEnter={() => setIsVisible(true)}
       />
+
+      {/* Chapter Search Drawer */}
+      <Drawer
+        title={null}
+        placement="bottom"
+        onClose={handleCloseDrawer}
+        open={isDrawerOpen}
+        height="80vh"
+        closeIcon={<CloseOutlined className="!text-white text-xl" />}
+        className="chapter-drawer"
+        styles={{
+          header: {
+            background: "#1f2937",
+            borderBottom: "none",
+          },
+          body: {
+            background: "#1f2937",
+            padding: "24px",
+          },
+        }}
+      >
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-6">Chapter</h2>
+
+          {/* Search Input */}
+          <Search
+            placeholder="Search"
+            size="large"
+            // prefix={<SearchOutlined className="text-gray-400" />}
+            // suffix={<DownOutlined className="text-gray-400" />}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="mb-6 [&_.ant-input]:bg-gray-700 [&_.ant-input]:text-white [&_.ant-input]:placeholder-gray-500 [&_.ant-input]:border-0 [&_.ant-input-affix-wrapper]:bg-gray-700 [&_.ant-input-affix-wrapper]:border-0 [&_.ant-input-affix-wrapper:hover]:bg-gray-600 [&_.ant-input-affix-wrapper-focused]:bg-gray-600 [&_.ant-input-affix-wrapper-focused]:shadow-none"
+          />
+
+          {/* Chapter List */}
+          <Spin spinning={loadingChapters}>
+            <div className="max-h-[calc(80vh-200px)] overflow-y-auto custom-scrollbar">
+              <List
+                dataSource={filteredChapters}
+                locale={{
+                  emptyText: (
+                    <div className="py-8 text-center text-gray-400">
+                      {searchQuery ? (
+                        <>
+                          <SearchOutlined className="mb-2 text-4xl" />
+                          <p>
+                            Tidak ada chapter yang sesuai dengan pencarian "
+                            {searchQuery}"
+                          </p>
+                        </>
+                      ) : (
+                        <p>Tidak ada chapter tersedia</p>
+                      )}
+                    </div>
+                  ),
+                }}
+                renderItem={(chapter) => (
+                  <div
+                    key={chapter.chapter_id}
+                    onClick={() => handleChapterClick(chapter.chapter_id)}
+                    className={`px-6 py-4 rounded-xl mb-2 cursor-pointer transition-all ${
+                      chapter.chapter_id === chapterId
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-700 text-white hover:bg-gray-600"
+                    }`}
+                  >
+                    <div className="font-semibold">
+                      Chapter {chapter.chapter_number}
+                    </div>
+                    {chapter.chapter_title && (
+                      <div className="text-sm text-gray-300 mt-1">
+                        {chapter.chapter_title}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+          </Spin>
+        </div>
+      </Drawer>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #374151;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #6b7280;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+        .chapter-drawer .ant-drawer-close {
+          top: 16px;
+          right: 16px;
+        }
+        .chapter-drawer .ant-drawer-close:hover {
+          background-color: transparent;
+        }
+        .chapter-drawer .ant-drawer-header {
+          padding: 16px 24px;
+        }
+      `}</style>
     </div>
   );
 };
