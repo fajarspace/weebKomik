@@ -199,7 +199,7 @@ const HeroCarousel: React.FC = () => {
                         onClick={() =>
                           navigate(`/detail/${selectedSlider.slider_link}`)
                         }
-                        className="!bg-blue-800 hover:bg-blue-500"
+                        className="!bg-blue-600 hover:bg-blue-500"
                       >
                         Baca <RightOutlined />
                       </Button>

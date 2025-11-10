@@ -160,7 +160,7 @@ const MangaList: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onSearch={handleSearch}
                 loading={loading}
-                className="[&_.ant-input]:bg-gray-700/80 [&_.ant-input]:border-gray-600 [&_.ant-input]:text-white [&_.ant-input]:placeholder-gray-400 [&_.ant-input:hover]:border-blue-800 [&_.ant-input:focus]:border-blue-800 [&_.ant-input:hover]:bg-gray-700 [&_.ant-input:focus]:bg-gray-700 [&_.ant-btn-primary]:bg-blue-800 [&_.ant-btn-primary]:border-blue-800 [&_.ant-btn-primary:hover]:bg-blue-700"
+                className="[&_.ant-input]:bg-gray-700/80 [&_.ant-input]:border-gray-600 [&_.ant-input]:text-white [&_.ant-input]:placeholder-gray-400 [&_.ant-input:hover]:border-blue-600 [&_.ant-input:focus]:border-blue-600 [&_.ant-input:hover]:bg-gray-700 [&_.ant-input:focus]:bg-gray-700 [&_.ant-btn-primary]:bg-blue-600 [&_.ant-btn-primary]:border-blue-600 [&_.ant-btn-primary:hover]:bg-blue-700"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ const MangaList: React.FC = () => {
       </nav>
 
       {/* Header */}
-      <div className="relative bg-gradient-to-r from-blue-800 via-blue-900 to-blue-950 shadow-xl">
+      <div className="relative bg-gradient-to-r from-blue-600 via-blue-900 to-blue-950 shadow-xl">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative max-w-7xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           <div className="flex items-center gap-3 sm:gap-4">
